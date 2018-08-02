@@ -11,7 +11,7 @@ app.get('/', function (req, res) {
     lan_badwidth: 0,
     wan_bandwidth: 0,
     total_bandwidth: 0,
-    stream_count_total: 0,
+    stream_count: 0,
     stream_count_direct_play: 0,
     stream_count_direct_stream: 0,
     stream_count_transcode: 0
@@ -26,7 +26,7 @@ app.get('/', function (req, res) {
       stats.lan_badwidth = data.lan_bandwidth
       stats.wan_bandwidth = data.wan_bandwidth
       stats.total_bandwidth = data.total_bandwidth
-      stats.stream_count_total = data.stream_count
+      stats.stream_count = Number(data.stream_count)
       stats.stream_count_direct_play = data.stream_count_direct_play
       stats.stream_count_direct_stream = data.stream_count_direct_stream
       stats.stream_count_transcode = data.stream_count_transcode
