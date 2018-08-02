@@ -11,7 +11,7 @@ app.get('/', function (req, res) {
     data = JSON.parse(body)
     sessions = data['response']['data']['sessions']
 
-    transcodes = sessions.filter(session => session['transcode_decision'] == 'transcode')
+    transcodes = sessions.filter(session => session['stream_video_decision'] == 'transcode')
     if (transcodes.length > 0 )
       res.send({
         'num_transcodes': transcodes.length
