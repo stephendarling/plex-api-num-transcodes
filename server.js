@@ -16,6 +16,15 @@ app.get('/', function (req, res) {
     stream_count_direct_stream: 0,
     stream_count_transcode: 0
   }
+  var lan = []
+  var wan = []
+  function total (array) {
+    if (array.length > 0)
+      return array.reduce((a,b) => a + b)
+    else
+      return 0
+  }
+
   axios({
     method: 'get',
     url: tt_url,
@@ -23,9 +32,19 @@ app.get('/', function (req, res) {
     })
     .then(function (response) {
       data = response.data['response']['data']
-      stats.lan_badwidth = data.lan_bandwidth
-      stats.wan_bandwidth = data.wan_bandwidth
-      stats.total_bandwidth = data.total_bandwidth
+      sessions = data['sessions']
+      sessions.map(session => {
+        var bandwidth = Number(session['bandwidth'])
+        if (session['bandwidth'] > 999999)
+          bandwidth = Number(session['bandwidth'])/1000
+        if (session['location'] == 'lan')
+          lan.push(bandwidth)
+        else
+          wan.push(bandwidth)
+      })
+      stats.lan_badwidth = total(lan)
+      stats.wan_bandwidth = total(wan)
+      stats.total_bandwidth = total([...lan,...wan])
       stats.stream_count = Number(data.stream_count)
       stats.stream_count_direct_play = data.stream_count_direct_play
       stats.stream_count_direct_stream = data.stream_count_direct_stream
